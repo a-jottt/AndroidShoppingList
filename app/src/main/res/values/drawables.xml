@@ -1,0 +1,4 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="ic_menu_current" type="drawable">@drawable/basket</item>
+    <item name="ic_menu_archived" type="drawable">@drawable/av_timer</item>
+</resources>
