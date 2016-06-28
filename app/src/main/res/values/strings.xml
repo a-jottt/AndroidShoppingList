@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Shopping List</string>
-    <string name="current_tab_title">Current</string>
-    <string name="archived_tab_title">Archived</string>
 </resources>
