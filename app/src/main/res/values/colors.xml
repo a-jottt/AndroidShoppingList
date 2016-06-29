@@ -6,5 +6,9 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
+    <color name="wheelTextColor">#222</color>
     <color name="colorAccent">#689f38</color>
+    <color name="colorAccentLight">#9ccc65</color>
+    <color name="colorAccentSecond">#ef6c00</color>
+    <color name="colorAccentSecondLight">#ff9e80</color>
 </resources>
