@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
+import com.example.androidshoppinglist.app.BaseApplication;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
@@ -25,6 +26,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BaseApplication) getApplication()).component().inject(this);
     }
 
     @Override
@@ -143,5 +146,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onFinishEditDialog(String inputText) {
         actionCreator.addNewShoppingListAction(inputText);
+    }
+
+    @Subscribe
+    public void onNewListAdded(ShoppingListItem shoppingListItem) {
+
     }
 }
