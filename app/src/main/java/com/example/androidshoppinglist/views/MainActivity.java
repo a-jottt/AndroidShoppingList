@@ -1,7 +1,8 @@
-package com.example.androidshoppinglist;
+package com.example.androidshoppinglist.views;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
 
@@ -27,7 +29,8 @@ import java.util.Date;
 import java.util.List;
 
 @EActivity(R.layout.activity_drawer)
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        ListTitleDialogFragment.ListTitleDialogListener{
 
     @ViewById(R.id.toolbar) Toolbar toolbar;
     @ViewById(R.id.fab) FloatingActionButton fab;
@@ -63,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Click(R.id.fab)
     public void onAddListClick() {
-        Toast.makeText(this, "Add action", Toast.LENGTH_LONG).show();
+        DialogFragment dialog = new ListTitleDialogFragment();
+        dialog.show(getSupportFragmentManager(), "ListTitleDialogFragment");
     }
 
     @Override
@@ -108,5 +112,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFinishEditDialog(String inputText) {
+
     }
 }
