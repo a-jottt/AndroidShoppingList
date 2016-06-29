@@ -13,20 +13,24 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
+import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.models.ShoppingListItem;
+import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 @EActivity(R.layout.activity_drawer)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -38,9 +42,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @ViewById(R.id.nav_view) NavigationView navigationView;
     @ViewById(R.id.recyclerView) RecyclerView recyclerView;
 
+    @Inject
+    ActionCreator actionCreator;
+
+    @Inject
+    EventBus eventBus;
+
+    @Inject
+    ShoppingListStore shoppingListStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        eventBus.register(this);
+    }
+
+    @Override
+    public void onStop() {
+        shoppingListStore.onPause();
+        eventBus.unregister(this);
+        super.onStop();
     }
 
     @AfterViews
@@ -116,6 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onFinishEditDialog(String inputText) {
-
+        actionCreator.addNewShoppingListAction(inputText);
     }
 }
