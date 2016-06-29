@@ -46,4 +46,6 @@ dependencies {
     provided 'javax.annotation:jsr250-api:1.0'
 
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    compile 'com.github.jakob-grabner:Circle-Progress-View:v1.2.9'
 }
