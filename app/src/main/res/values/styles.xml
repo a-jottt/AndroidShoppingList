@@ -12,6 +12,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Modal" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/colorGreyDark</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorGreyDark</item>
+        <item name="android:textColorHint">@color/colorGreyDark</item>
+    </style>
+
     <style name="MyMaterialTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="MyMaterialTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

@@ -11,4 +11,5 @@
     <color name="colorAccentLight">#9ccc65</color>
     <color name="colorAccentSecond">#ef6c00</color>
     <color name="colorAccentSecondLight">#ff9e80</color>
+    <color name="colorGreyDark">#727272</color>
 </resources>

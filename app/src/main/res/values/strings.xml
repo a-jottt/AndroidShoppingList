@@ -8,4 +8,5 @@
     <string name="other">Other</string>
     <string name="archived">Archived</string>
     <string name="current">Current</string>
+    <string name="title_hint">Shopping list title</string>
 </resources>
