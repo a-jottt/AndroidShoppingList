@@ -3,12 +3,12 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-apt'
 
 def AAVersion = '4.0.0'
-def AndroidSupport = '23.4.0'
+def AndroidSupport = '24.0.0'
 def DaggerVersion = '2.2'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "com.example.androidshoppinglist"
@@ -48,4 +48,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
 
     compile 'com.github.jakob-grabner:Circle-Progress-View:v1.2.9'
+
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
