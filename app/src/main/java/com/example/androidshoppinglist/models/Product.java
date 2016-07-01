@@ -1,13 +1,20 @@
 package com.example.androidshoppinglist.models;
 
+import io.realm.RealmObject;
+
 /**
  * Created by joanna on 29.06.16.
  */
-public class Product {
+
+public class Product extends RealmObject {
 
     String name;
     Integer quantity;
-    boolean bought;
+    boolean isBought;
+
+    public Product() {
+        super();
+    }
 
     public Product(String name) {
         this.name = name;
@@ -30,10 +37,10 @@ public class Product {
     }
 
     public boolean isBought() {
-        return bought;
+        return isBought;
     }
 
     public void setBought(boolean bought) {
-        this.bought = bought;
+        this.isBought = bought;
     }
 }

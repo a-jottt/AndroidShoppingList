@@ -1,26 +1,33 @@
 package com.example.androidshoppinglist.models;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
 /**
  * Created by joanna on 29.06.16.
  */
-public class ShoppingListItem {
+public class ShoppingListItem extends RealmObject {
 
     String title;
     Date createdAt;
-    List<Product> products;
     boolean archived;
     int productsBought;
+    RealmList<Product> products;
+
+    public ShoppingListItem() {
+        super();
+    }
 
     public ShoppingListItem(String title, Date createdAt) {
+        super();
         this.title = title;
         this.createdAt = createdAt;
-        products = new ArrayList<>();
+        products = new RealmList<>();
     }
 
     public String getTitle() {
@@ -66,7 +73,7 @@ public class ShoppingListItem {
 
     public int getProductsBought() {
         productsBought = 0;
-        for (Product product: products) {
+        for (Product product: getProducts()) {
             if (product.isBought())
                 productsBought += 1;
         }
@@ -75,5 +82,9 @@ public class ShoppingListItem {
 
     public int getProductsToBuy() {
         return products.size();
+    }
+
+    public void setProductsBought(int productsBought) {
+        this.productsBought = productsBought;
     }
 }
