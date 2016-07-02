@@ -13,12 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.app.BaseApplication;
+import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
+import com.example.androidshoppinglist.stores.DatabaseStore;
 import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
 
@@ -30,7 +31,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Inject ActionCreator actionCreator;
     @Inject EventBus eventBus;
     @Inject ShoppingListStore shoppingListStore;
+    @Inject DatabaseStore databaseStore;
 
     List<ShoppingListItem> shoppingListItems;
     ShoppingListAdapter mRecyclerAdapter;
@@ -59,20 +60,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        eventBus.register(this);
-    }
-
-    @Override
     public void onStop() {
         shoppingListStore.onPause();
+        databaseStore.onPause();
         eventBus.unregister(this);
         super.onStop();
     }
 
     @AfterViews
     public void prepare() {
+        eventBus.register(this);
+
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -82,10 +80,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         shoppingListItems = new ArrayList<>();
+        setupAdapter();
 
-        mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this);
-        recyclerView.setAdapter(mRecyclerAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        actionCreator.createGetShoppingListsFromDbAction(this);
     }
 
     @Click(R.id.fab)
@@ -150,7 +147,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Subscribe
-    public void onShoppingListsUpdate(List<ShoppingListItem> list) {
-        mRecyclerAdapter.notifyData(list);
+    public void onShoppingListEvent(ShoppingListEvent shoppingListEvent) {
+        shoppingListItems = shoppingListEvent.getList();
+        mRecyclerAdapter.notifyData(shoppingListItems);
+    }
+
+    private void setupAdapter() {
+        mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this);
+        recyclerView.setAdapter(mRecyclerAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
