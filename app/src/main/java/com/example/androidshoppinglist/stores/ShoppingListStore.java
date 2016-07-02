@@ -1,11 +1,12 @@
 package com.example.androidshoppinglist.stores;
 
-import android.util.Log;
+import android.app.Activity;
 
 import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
+import com.example.androidshoppinglist.data.ActivityEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,8 +22,6 @@ import javax.inject.Inject;
  */
 public class ShoppingListStore {
 
-    @Inject DatabaseStore databaseStore;
-
     public ArrayList<ShoppingListItem> shoppingListItems;
     public EventBus eventBus;
 
@@ -35,19 +34,27 @@ public class ShoppingListStore {
 
     public void onPause() {
         eventBus.unregister(this);
-        databaseStore.onPause();
     }
 
     @Subscribe
     public final void onShoppingListAction(ShoppingListAction action) {
         DataBundle<DataKeys> data = action.getData();
-        String title = (String) data.get(DataKeys.SHOPPING_LIST_TITLE, -1);
         ActionTypes actionType = action.getType();
         switch (actionType) {
             case ADD_NEW_SHOPPING_LIST:
+                String title = (String) data.get(DataKeys.SHOPPING_LIST_TITLE, -1);
                 addNewShoppingList(title);
                 break;
+            case GET_SHOPPING_LISTS_FROM_DATABASE:
+                Activity activity = (Activity) data.get(DataKeys.ACTIVITY_CONTEXT, -1);
+                getShoppingListsFromDb(activity);
+                break;
         }
+    }
+
+    private void getShoppingListsFromDb(Activity activity) {
+        ActivityEvent activityEvent = new ActivityEvent(activity);
+        eventBus.post(activityEvent);
     }
 
     private void addNewShoppingList(String title) {

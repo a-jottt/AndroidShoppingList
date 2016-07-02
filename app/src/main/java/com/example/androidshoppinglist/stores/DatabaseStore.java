@@ -1,11 +1,14 @@
 package com.example.androidshoppinglist.stores;
 
-import android.util.Log;
-
+import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,11 +20,13 @@ import io.realm.Realm;
 public class DatabaseStore {
 
     public EventBus eventBus;
+    private Realm realm;
 
     @Inject
     public DatabaseStore(EventBus eventBus) {
         this.eventBus = eventBus;
         eventBus.register(this);
+        realm = Realm.getDefaultInstance();
     }
 
     public void onPause() {
@@ -29,7 +34,13 @@ public class DatabaseStore {
     }
 
     @Subscribe
+    public void returnShoppingListsFromDb(ActivityEvent activityEvent) {
+        List<ShoppingListItem> list = new ArrayList<>(realm.where(ShoppingListItem.class).findAll());
+        eventBus.post(new ShoppingListEvent(list));
+    }
+
+    @Subscribe
     public void onShoppingListItemUpdate(ShoppingListItem shoppingListItem) {
-        Realm.getDefaultInstance().executeTransaction(realm -> realm.copyToRealmOrUpdate(shoppingListItem));
+        realm.executeTransaction(realm -> realm.copyToRealmOrUpdate(shoppingListItem));
     }
 }
