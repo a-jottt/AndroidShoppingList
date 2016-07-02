@@ -1,5 +1,8 @@
 package com.example.androidshoppinglist.actions;
 
+import android.app.Activity;
+import android.util.Log;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -17,5 +20,11 @@ public class ActionCreator {
         DataBundle<DataKeys> bundle = new DataBundle<>();
         bundle.put(DataKeys.SHOPPING_LIST_TITLE, title);
         eventBus.post(new ShoppingListAction(ActionTypes.ADD_NEW_SHOPPING_LIST, bundle));
+    }
+
+    public final void createGetShoppingListsFromDbAction(final Activity activity) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.ACTIVITY_CONTEXT, activity);
+        eventBus.post(new ShoppingListAction(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, bundle));
     }
 }
