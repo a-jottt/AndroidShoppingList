@@ -1,5 +1,6 @@
 package com.example.androidshoppinglist.models;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Locale;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by joanna on 29.06.16.
@@ -15,6 +17,7 @@ public class ShoppingListItem extends RealmObject {
 
     String title;
     Date createdAt;
+    @PrimaryKey long createdAtTime;
     boolean archived;
     int productsBought;
     RealmList<Product> products;
@@ -27,6 +30,7 @@ public class ShoppingListItem extends RealmObject {
         super();
         this.title = title;
         this.createdAt = createdAt;
+        this.createdAtTime = createdAt.getTime();
         products = new RealmList<>();
     }
 
