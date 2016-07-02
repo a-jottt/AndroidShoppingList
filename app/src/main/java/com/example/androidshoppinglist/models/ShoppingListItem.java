@@ -19,7 +19,6 @@ public class ShoppingListItem extends RealmObject {
     Date createdAt;
     @PrimaryKey long createdAtTime;
     boolean archived;
-    int productsBought;
     RealmList<Product> products;
 
     public ShoppingListItem() {
@@ -76,7 +75,7 @@ public class ShoppingListItem extends RealmObject {
     }
 
     public int getProductsBought() {
-        productsBought = 0;
+        int productsBought = 0;
         for (Product product: getProducts()) {
             if (product.isBought())
                 productsBought += 1;
@@ -86,9 +85,5 @@ public class ShoppingListItem extends RealmObject {
 
     public int getProductsToBuy() {
         return products.size();
-    }
-
-    public void setProductsBought(int productsBought) {
-        this.productsBought = productsBought;
     }
 }
