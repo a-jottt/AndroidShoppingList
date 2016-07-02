@@ -5,5 +5,6 @@ package com.example.androidshoppinglist.actions;
  */
 public enum ActionTypes implements ActionType {
 
+    GET_SHOPPING_LISTS_FROM_DATABASE,
     ADD_NEW_SHOPPING_LIST
 }
