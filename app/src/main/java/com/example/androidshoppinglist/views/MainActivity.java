@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
@@ -44,14 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @ViewById(R.id.nav_view) NavigationView navigationView;
     @ViewById(R.id.recyclerView) RecyclerView recyclerView;
 
-    @Inject
-    ActionCreator actionCreator;
+    @Inject ActionCreator actionCreator;
+    @Inject EventBus eventBus;
+    @Inject ShoppingListStore shoppingListStore;
 
-    @Inject
-    EventBus eventBus;
-
-    @Inject
-    ShoppingListStore shoppingListStore;
+    List<ShoppingListItem> shoppingListItems;
+    ShoppingListAdapter mRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        List<ShoppingListItem> items = new ArrayList<>();
-        items.add(new ShoppingListItem("my first", new Date()));
-        items.add(new ShoppingListItem("my second", new Date()));
-        items.add(new ShoppingListItem("my last", new Date()));
+        shoppingListItems = new ArrayList<>();
 
-        ShoppingListAdapter adapter = new ShoppingListAdapter(items, this);
-        recyclerView.setAdapter(adapter);
+        mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this);
+        recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
     @Click(R.id.fab)
@@ -150,6 +145,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Subscribe
     public void onNewListAdded(ShoppingListItem shoppingListItem) {
+        shoppingListItems.add(shoppingListItem);
+        mRecyclerAdapter.notifyData(shoppingListItems);
+    }
 
+    @Subscribe
+    public void onShoppingListsUpdate(List<ShoppingListItem> list) {
+        mRecyclerAdapter.notifyData(list);
     }
 }

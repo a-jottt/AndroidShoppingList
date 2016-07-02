@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import at.grabner.circleprogress.CircleProgressView;
@@ -21,7 +22,7 @@ import at.grabner.circleprogress.TextMode;
  */
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder> {
 
-    private final List<ShoppingListItem> shoppingListItems;
+    private List<ShoppingListItem> shoppingListItems;
     private final Context mContext;
 
     public ShoppingListAdapter(List<ShoppingListItem> shoppingListItems, Context mContext) {
@@ -52,6 +53,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public int getItemCount() {
         return (null != shoppingListItems ? shoppingListItems.size() : 0);
+    }
+
+    public void notifyData(List<ShoppingListItem> myList) {
+        this.shoppingListItems = myList;
+        notifyDataSetChanged();
     }
 
     class ShoppingListViewHolder extends RecyclerView.ViewHolder {
