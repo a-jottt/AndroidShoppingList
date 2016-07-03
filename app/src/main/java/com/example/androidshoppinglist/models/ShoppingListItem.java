@@ -74,6 +74,10 @@ public class ShoppingListItem extends RealmObject {
         this.archived = archived;
     }
 
+    public long getCreatedAtTime() {
+        return createdAtTime;
+    }
+
     public int getProductsBought() {
         int productsBought = 0;
         for (Product product: getProducts()) {
