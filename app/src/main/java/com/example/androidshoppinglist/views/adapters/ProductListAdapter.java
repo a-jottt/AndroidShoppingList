@@ -1,9 +1,6 @@
 package com.example.androidshoppinglist.views.adapters;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -42,7 +39,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         Product product = products.get(position);
 
         holder.textViewProduct.setText(product.getName());
-        holder.textViewQuantity.setText(product.getQuantity());
+        holder.textViewQuantity.setText(String.valueOf(product.getQuantity()));
 
         if (product.isBought())
             holder.imageViewCheckbox.setImageDrawable(

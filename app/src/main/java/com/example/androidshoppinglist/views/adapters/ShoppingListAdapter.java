@@ -2,7 +2,6 @@ package com.example.androidshoppinglist.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.views.DetailsActivity_;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import at.grabner.circleprogress.CircleProgressView;
@@ -54,6 +52,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.textViewDate.setText(shoppingListItem.getFormattedCreatedAt());
         holder.imageViewDetails.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, DetailsActivity_.class);
+            intent.putExtra(mContext.getString(R.string.listCreatedAtTime), shoppingListItem.getCreatedAtTime());
             mContext.startActivity(intent);
         });
     }
