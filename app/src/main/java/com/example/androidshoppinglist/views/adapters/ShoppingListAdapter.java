@@ -1,15 +1,19 @@
 package com.example.androidshoppinglist.views.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.models.ShoppingListItem;
+import com.example.androidshoppinglist.views.DetailsActivity_;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +52,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.circleProgressView.setMaxValue(productsToBuy);
         holder.textViewTitle.setText(shoppingListItem.getTitle());
         holder.textViewDate.setText(shoppingListItem.getFormattedCreatedAt());
+        holder.imageViewDetails.setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, DetailsActivity_.class);
+            mContext.startActivity(intent);
+        });
     }
 
     @Override
@@ -66,6 +74,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         public final CircleProgressView circleProgressView;
         public final TextView textViewDate;
         public final TextView textViewTitle;
+        public final ImageView imageViewDetails;
 
         public ShoppingListViewHolder(View itemView) {
             super(itemView);
@@ -74,6 +83,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             circleProgressView = (CircleProgressView) itemView.findViewById(R.id.circleView);
             textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
             textViewDate = (TextView) itemView.findViewById(R.id.textViewDate);
+            imageViewDetails = (ImageView) itemView.findViewById(R.id.imageViewDetails);
         }
     }
 }
