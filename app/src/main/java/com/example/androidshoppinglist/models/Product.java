@@ -12,19 +12,21 @@ import io.realm.annotations.PrimaryKey;
 public class Product extends RealmObject {
 
     String name;
-    int quantity;
+    double quantity;
     boolean isBought;
     Date createdAt;
     @PrimaryKey long createdAtTime;
+    long listCreatedAtTime;
 
     public Product() {
         super();
     }
 
-    public Product(String name, Date createdAt, int quantity) {
+    public Product(String name, Date createdAt, double quantity, long listCreatedAtTime) {
         this.name = name;
         this.createdAt = createdAt;
         this.quantity = quantity;
+        this.listCreatedAtTime = listCreatedAtTime;
         createdAtTime = createdAt.getTime();
     }
 
@@ -36,11 +38,11 @@ public class Product extends RealmObject {
         this.name = name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -54,5 +56,13 @@ public class Product extends RealmObject {
 
     public Date getCreatedAt() {
         return createdAt;
+    }
+
+    public long getListCreatedAtTime() {
+        return listCreatedAtTime;
+    }
+
+    public void setListCreatedAtTime(long listCreatedAtTime) {
+        this.listCreatedAtTime = listCreatedAtTime;
     }
 }

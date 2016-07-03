@@ -7,6 +7,7 @@ import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -49,6 +50,10 @@ public class ShoppingListStore {
                 Activity activity = (Activity) data.get(DataKeys.ACTIVITY_CONTEXT, -1);
                 getShoppingListsFromDb(activity);
                 break;
+            case ADD_PRODUCT_TO_LIST:
+                Product product = (Product) data.get(DataKeys.PRODUCT, -1);
+                addProductToList(product);
+                break;
         }
     }
 
@@ -60,5 +65,9 @@ public class ShoppingListStore {
     private void addNewShoppingList(String title) {
         ShoppingListItem shoppingListItem = new ShoppingListItem(title, new Date());
         eventBus.post(shoppingListItem);
+    }
+
+    private void addProductToList(Product product) {
+        eventBus.post(product);
     }
 }

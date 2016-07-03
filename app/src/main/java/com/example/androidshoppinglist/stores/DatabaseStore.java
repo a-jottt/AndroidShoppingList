@@ -1,7 +1,9 @@
 package com.example.androidshoppinglist.stores;
 
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
+import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +33,22 @@ public class DatabaseStore {
 
     public void onPause() {
         eventBus.unregister(this);
+    }
+
+    @Subscribe
+    public void onProductUpdate(Product product) {
+        ShoppingListItem shoppingListItem =
+                realm.where(ShoppingListItem.class).equalTo("createdAtTime", product.getListCreatedAtTime()).findFirst();
+
+        realm.beginTransaction();
+        shoppingListItem.addToProducts(product);
+        realm.commitTransaction();
+
+        List<Product> products = new ArrayList<>(shoppingListItem.getProducts());
+        realm.executeTransaction(realm -> realm.copyToRealmOrUpdate(product));
+
+        eventBus.post(shoppingListItem);
+        eventBus.post(new ProductsListEvent(products));
     }
 
     @Subscribe
