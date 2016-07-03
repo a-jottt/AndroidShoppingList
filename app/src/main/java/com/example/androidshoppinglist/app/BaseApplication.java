@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.androidshoppinglist.BuildConfig;
 import com.example.androidshoppinglist.app.modules.ApplicationModule;
+import com.example.androidshoppinglist.views.DetailsActivity;
 import com.example.androidshoppinglist.views.MainActivity;
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
@@ -24,6 +25,7 @@ public class BaseApplication extends Application {
     public interface ApplicationComponent {
         void inject(BaseApplication application);
         void inject (MainActivity mainActivity);
+        void inject (DetailsActivity detailsActivity);
     }
     private ApplicationComponent component;
 
