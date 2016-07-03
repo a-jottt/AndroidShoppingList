@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".views.DetailsActivity_"
+            android:label="@string/title_activity_details"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>
