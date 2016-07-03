@@ -3,6 +3,8 @@ package com.example.androidshoppinglist.actions;
 import android.app.Activity;
 import android.util.Log;
 
+import com.example.androidshoppinglist.models.Product;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -26,5 +28,11 @@ public class ActionCreator {
         DataBundle<DataKeys> bundle = new DataBundle<>();
         bundle.put(DataKeys.ACTIVITY_CONTEXT, activity);
         eventBus.post(new ShoppingListAction(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, bundle));
+    }
+
+    public final void createAddProductToListsAction(final Product product) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.PRODUCT, product);
+        eventBus.post(new ShoppingListAction(ActionTypes.ADD_PRODUCT_TO_LIST, bundle));
     }
 }

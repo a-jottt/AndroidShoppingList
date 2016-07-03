@@ -6,5 +6,6 @@ package com.example.androidshoppinglist.actions;
 public enum DataKeys implements DataKey {
 
     ACTIVITY_CONTEXT,
-    SHOPPING_LIST_TITLE
+    SHOPPING_LIST_TITLE,
+    PRODUCT
 }
