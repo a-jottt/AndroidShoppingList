@@ -2,7 +2,7 @@ package com.example.androidshoppinglist.views;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,22 +10,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.androidshoppinglist.R;
+import com.example.androidshoppinglist.actions.ActionCreator;
+import com.example.androidshoppinglist.app.BaseApplication;
+import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.models.Product;
+import com.example.androidshoppinglist.stores.DatabaseStore;
+import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ProductListAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 @EActivity(R.layout.activity_details)
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements ProductDialogFragment.ProductDialogListener {
 
     @ViewById(R.id.recyclerView) RecyclerView recyclerView;
     @ViewById(R.id.toolbar) Toolbar toolbar;
     @ViewById(R.id.fab) FloatingActionButton fab;
+
+    @Inject
+    ActionCreator actionCreator;
+    @Inject
+    EventBus eventBus;
+    @Inject
+    ShoppingListStore shoppingListStore;
+    @Inject
+    DatabaseStore databaseStore;
+
+    @Extra("listCreatedAtTime")
+    long listCreatedAtTime;
 
     ProductListAdapter mRecyclerAdapter;
     List<Product> productsList;
@@ -33,17 +56,28 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((BaseApplication) getApplication()).component().inject(this);
+    }
+
+    @Override
+    public void onStop() {
+        shoppingListStore.onPause();
+        databaseStore.onPause();
+        eventBus.unregister(this);
+        super.onStop();
     }
 
     @AfterViews
     public void prepare() {
+        eventBus.register(this);
+
         setSupportActionBar(toolbar);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                DialogFragment dialog = new ProductDialogFragment();
+                dialog.show(getSupportFragmentManager(), "ProductDialogFragment");
             }
         });
 
@@ -57,4 +91,14 @@ public class DetailsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @Override
+    public void onFinishEditDialog(String inputText, double quantity) {
+        actionCreator.createAddProductToListsAction(new Product(inputText, new Date(), quantity, listCreatedAtTime));
+    }
+
+    @Subscribe
+    public void onProductsListUpdate(ProductsListEvent productsListEvent) {
+        productsList = productsListEvent.getProducts();
+        mRecyclerAdapter.notifyData(productsList);
+    }
 }
