@@ -2,6 +2,7 @@ package com.example.androidshoppinglist.stores;
 
 import android.app.Activity;
 
+import com.example.androidshoppinglist.actions.ActionType;
 import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
@@ -48,17 +49,22 @@ public class ShoppingListStore {
                 break;
             case GET_SHOPPING_LISTS_FROM_DATABASE:
                 Activity activity = (Activity) data.get(DataKeys.ACTIVITY_CONTEXT, -1);
-                getShoppingListsFromDb(activity);
+                getShoppingListsFromDb(activity, ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE);
                 break;
             case ADD_PRODUCT_TO_LIST:
                 Product product = (Product) data.get(DataKeys.PRODUCT, -1);
                 addProductToList(product);
                 break;
+            case GET_PRODUCTS_LIST_FROM_DATABASE:
+                long listCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
+                getProductsListFromDb(listCreatedAtTime, ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE);
+                break;
         }
     }
 
-    private void getShoppingListsFromDb(Activity activity) {
-        ActivityEvent activityEvent = new ActivityEvent(activity);
+    private void getShoppingListsFromDb(Activity activity, ActionTypes actionType) {
+        ActivityEvent activityEvent = new ActivityEvent(actionType);
+        activityEvent.setActivity(activity);
         eventBus.post(activityEvent);
     }
 
@@ -69,5 +75,11 @@ public class ShoppingListStore {
 
     private void addProductToList(Product product) {
         eventBus.post(product);
+    }
+
+    private void getProductsListFromDb(long createdAtTime, ActionTypes actionType) {
+        ActivityEvent activityEvent = new ActivityEvent(actionType);
+        activityEvent.setListCreatedAtTime(createdAtTime);
+        eventBus.post(activityEvent);
     }
 }

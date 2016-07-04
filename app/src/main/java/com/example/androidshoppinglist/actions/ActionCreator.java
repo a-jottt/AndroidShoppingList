@@ -29,9 +29,9 @@ public class ActionCreator {
         eventBus.post(new ShoppingListAction(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, bundle));
     }
 
-    public final void createGetProductsListFromDbAction(final Activity activity) {
+    public final void createGetProductsListFromDbAction(final long listCreatedAtTime) {
         DataBundle<DataKeys> bundle = new DataBundle<>();
-        bundle.put(DataKeys.ACTIVITY_CONTEXT, activity);
+        bundle.put(DataKeys.LIST_CREATED_AT_TIME, listCreatedAtTime);
         eventBus.post(new ShoppingListAction(ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE, bundle));
     }
 

@@ -83,6 +83,8 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
 
         productsList = new ArrayList<>();
         setupAdapter();
+
+        actionCreator.createGetProductsListFromDbAction(listCreatedAtTime);
     }
 
     private void setupAdapter() {

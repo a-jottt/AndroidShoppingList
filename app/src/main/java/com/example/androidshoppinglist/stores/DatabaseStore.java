@@ -53,12 +53,31 @@ public class DatabaseStore {
 
     @Subscribe
     public void returnShoppingListsFromDb(ActivityEvent activityEvent) {
-        List<ShoppingListItem> list = new ArrayList<>(realm.where(ShoppingListItem.class).findAll());
-        eventBus.post(new ShoppingListEvent(list));
+        switch (activityEvent.actionType) {
+            case GET_PRODUCTS_LIST_FROM_DATABASE:
+                List<Product> products = getProductsListFromDatabase(activityEvent.getListCreatedAtTime());
+                eventBus.post(new ProductsListEvent(products));
+                break;
+            case GET_SHOPPING_LISTS_FROM_DATABASE:
+                List<ShoppingListItem> list = new ArrayList<>(getShoppingListsFromDatabase());
+                eventBus.post(new ShoppingListEvent(list));
+                break;
+        }
     }
 
     @Subscribe
     public void onShoppingListItemUpdate(ShoppingListItem shoppingListItem) {
         realm.executeTransaction(realm -> realm.copyToRealmOrUpdate(shoppingListItem));
+    }
+
+    private List<Product> getProductsListFromDatabase(long listCreatedAtTime) {
+        ShoppingListItem shoppingListItem =
+                realm.where(ShoppingListItem.class).equalTo("createdAtTime", listCreatedAtTime).findFirst();
+        return shoppingListItem.getProducts();
+
+    }
+
+    private List<ShoppingListItem> getShoppingListsFromDatabase() {
+        return realm.where(ShoppingListItem.class).findAll();
     }
 }
