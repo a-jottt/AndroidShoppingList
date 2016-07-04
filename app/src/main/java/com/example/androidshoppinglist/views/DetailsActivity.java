@@ -92,8 +92,8 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     }
 
     @Override
-    public void onFinishEditDialog(String inputText, double quantity) {
-        actionCreator.createAddProductToListsAction(new Product(inputText, new Date(), quantity, listCreatedAtTime));
+    public void onFinishEditDialog(String inputText, double quantity, String unit) {
+        actionCreator.createAddProductToListsAction(new Product(inputText, new Date(), quantity, listCreatedAtTime, unit));
     }
 
     @Subscribe

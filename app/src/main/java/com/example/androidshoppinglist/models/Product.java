@@ -17,16 +17,18 @@ public class Product extends RealmObject {
     Date createdAt;
     @PrimaryKey long createdAtTime;
     long listCreatedAtTime;
+    String unit;
 
     public Product() {
         super();
     }
 
-    public Product(String name, Date createdAt, double quantity, long listCreatedAtTime) {
+    public Product(String name, Date createdAt, double quantity, long listCreatedAtTime, String unit) {
         this.name = name;
         this.createdAt = createdAt;
         this.quantity = quantity;
         this.listCreatedAtTime = listCreatedAtTime;
+        this.unit = unit;
         createdAtTime = createdAt.getTime();
     }
 
@@ -64,5 +66,13 @@ public class Product extends RealmObject {
 
     public void setListCreatedAtTime(long listCreatedAtTime) {
         this.listCreatedAtTime = listCreatedAtTime;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

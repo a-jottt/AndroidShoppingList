@@ -40,6 +40,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         holder.textViewProduct.setText(product.getName());
         holder.textViewQuantity.setText(String.valueOf(product.getQuantity()));
+        holder.textViewUnit.setText(product.getUnit());
 
         if (product.isBought())
             holder.imageViewCheckbox.setImageDrawable(
@@ -62,6 +63,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         public final ImageView imageViewCheckbox;
         public final TextView textViewProduct;
         public final TextView textViewQuantity;
+        public final TextView textViewUnit;
 
         public ProductListViewHolder(View itemView) {
             super(itemView);
@@ -70,6 +72,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             imageViewCheckbox = (ImageView) itemView.findViewById(R.id.imageViewCheckbox);
             textViewProduct = (TextView) itemView.findViewById(R.id.textViewProduct);
             textViewQuantity = (TextView) itemView.findViewById(R.id.textViewQuantity);
+            textViewUnit = (TextView) itemView.findViewById(R.id.textViewUnit);
         }
     }
 }

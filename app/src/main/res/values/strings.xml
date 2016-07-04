@@ -11,4 +11,17 @@
     <string name="title_hint">Shopping list title</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="listCreatedAtTime">listCreatedAtTime</string>
+    <string name="choose_unit">Choose unit:</string>
+    <string name="quantity">Quantity</string>
+    <string name="product_name">Product name</string>
+    <string name="enter_list_title">Enter list title</string>
+    <string name="ok">ok</string>
+
+    <string-array name="unit_array">
+        <item>kg</item>
+        <item>gram</item>
+        <item>liter</item>
+        <item>pc/s</item>
+        <item>other</item>
+    </string-array>
 </resources>
