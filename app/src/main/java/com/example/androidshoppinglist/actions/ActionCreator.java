@@ -1,7 +1,6 @@
 package com.example.androidshoppinglist.actions;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.example.androidshoppinglist.models.Product;
 
@@ -28,6 +27,12 @@ public class ActionCreator {
         DataBundle<DataKeys> bundle = new DataBundle<>();
         bundle.put(DataKeys.ACTIVITY_CONTEXT, activity);
         eventBus.post(new ShoppingListAction(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, bundle));
+    }
+
+    public final void createGetProductsListFromDbAction(final Activity activity) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.ACTIVITY_CONTEXT, activity);
+        eventBus.post(new ShoppingListAction(ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE, bundle));
     }
 
     public final void createAddProductToListsAction(final Product product) {
