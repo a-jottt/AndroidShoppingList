@@ -29,6 +29,7 @@ public class Product extends RealmObject {
         this.quantity = quantity;
         this.listCreatedAtTime = listCreatedAtTime;
         this.unit = unit;
+        isBought = false;
         createdAtTime = createdAt.getTime();
     }
 

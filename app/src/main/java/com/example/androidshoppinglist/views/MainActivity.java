@@ -67,6 +67,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mRecyclerAdapter.notifyDataSetChanged();
+    }
+
     @AfterViews
     public void prepare() {
         eventBus.register(this);

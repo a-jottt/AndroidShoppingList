@@ -12,6 +12,7 @@ import android.view.View;
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.app.BaseApplication;
+import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.stores.DatabaseStore;
@@ -102,5 +103,10 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     public void onProductsListUpdate(ProductsListEvent productsListEvent) {
         productsList = productsListEvent.getProducts();
         mRecyclerAdapter.notifyData(productsList);
+    }
+
+    @Subscribe
+    public void onProductBoughtUpdate(ProductBoughtEvent productBoughtEvent) {
+        mRecyclerAdapter.notifyDataSetChanged();
     }
 }

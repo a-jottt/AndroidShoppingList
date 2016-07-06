@@ -8,6 +8,7 @@ import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 
@@ -59,6 +60,14 @@ public class ShoppingListStore {
                 long listCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
                 getProductsListFromDb(listCreatedAtTime, ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE);
                 break;
+            case SET_PRODUCT_BOUGHT:
+                Product productBought = (Product) data.get(DataKeys.PRODUCT, -1);
+                setProductBought(productBought);
+                break;
+            case SET_PRODUCT_NOT_BOUGHT:
+                Product productNotBought = (Product) data.get(DataKeys.PRODUCT, -1);
+                setProductNotBought(productNotBought);
+                break;
         }
     }
 
@@ -81,5 +90,13 @@ public class ShoppingListStore {
         ActivityEvent activityEvent = new ActivityEvent(actionType);
         activityEvent.setListCreatedAtTime(createdAtTime);
         eventBus.post(activityEvent);
+    }
+
+    private void setProductBought(Product productBought) {
+        eventBus.post(new ProductBoughtEvent(productBought, true));
+    }
+
+    private void setProductNotBought(Product productNotBought) {
+        eventBus.post(new ProductBoughtEvent(productNotBought, false));
     }
 }

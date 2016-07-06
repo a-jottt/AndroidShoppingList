@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
+import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.models.Product;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -22,10 +25,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     private List<Product> products;
     private final Activity mActivity;
+    private ActionCreator actionCreator;
 
     public ProductListAdapter(List<Product> products, Activity mActivity) {
         this.products = products;
         this.mActivity = mActivity;
+        this.actionCreator = new ActionCreator(EventBus.getDefault());
     }
 
     @Override
@@ -42,9 +47,27 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.textViewQuantity.setText(String.valueOf(product.getQuantity()));
         holder.textViewUnit.setText(product.getUnit());
 
-        if (product.isBought())
+        if (product.isBought()) {
             holder.imageViewCheckbox.setImageDrawable(
                     ContextCompat.getDrawable(mActivity, R.drawable.checkbox_marked));
+            holder.imageViewCheckbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    actionCreator.createSetProductNotBoughtAction(product);
+                }
+            });
+        }
+        else {
+            holder.imageViewCheckbox.setImageDrawable(
+                    ContextCompat.getDrawable(mActivity, R.drawable.checkbox_blank));
+            holder.imageViewCheckbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    actionCreator.createSetProductBoughtAction(product);
+                }
+            });
+        }
+
     }
 
     @Override

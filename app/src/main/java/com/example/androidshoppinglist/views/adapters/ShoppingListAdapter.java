@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
+import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.views.DetailsActivity_;
 
@@ -18,6 +19,8 @@ import java.util.List;
 
 import at.grabner.circleprogress.CircleProgressView;
 import at.grabner.circleprogress.TextMode;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 /**
  * Created by joanna on 29.06.16.
@@ -42,7 +45,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     public void onBindViewHolder(ShoppingListAdapter.ShoppingListViewHolder holder, int position) {
         ShoppingListItem shoppingListItem = shoppingListItems.get(position);
         int productsBought = shoppingListItem.getProductsBought();
-        int productsToBuy = shoppingListItem.getProductsToBuy();
+        int productsToBuy = shoppingListItem.getProducts().size();
 
         holder.circleProgressView.setText(String.valueOf(productsBought) + "/" + String.valueOf(productsToBuy));
         holder.circleProgressView.setTextMode(TextMode.TEXT);

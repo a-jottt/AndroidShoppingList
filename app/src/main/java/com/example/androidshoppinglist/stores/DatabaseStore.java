@@ -1,6 +1,7 @@
 package com.example.androidshoppinglist.stores;
 
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.Product;
@@ -41,7 +42,7 @@ public class DatabaseStore {
                 realm.where(ShoppingListItem.class).equalTo("createdAtTime", product.getListCreatedAtTime()).findFirst();
 
         realm.beginTransaction();
-        shoppingListItem.addToProducts(product);
+        shoppingListItem.getProducts().add(product);
         realm.commitTransaction();
 
         List<Product> products = new ArrayList<>(shoppingListItem.getProducts());
@@ -68,6 +69,13 @@ public class DatabaseStore {
     @Subscribe
     public void onShoppingListItemUpdate(ShoppingListItem shoppingListItem) {
         realm.executeTransaction(realm -> realm.copyToRealmOrUpdate(shoppingListItem));
+    }
+
+    @Subscribe
+    public void onProductBoughtUpdate(ProductBoughtEvent productBoughtEvent) {
+        realm.beginTransaction();
+        productBoughtEvent.getProduct().setBought(productBoughtEvent.isBought());
+        realm.commitTransaction();
     }
 
     private List<Product> getProductsListFromDatabase(long listCreatedAtTime) {

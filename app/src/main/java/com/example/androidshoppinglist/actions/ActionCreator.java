@@ -40,4 +40,16 @@ public class ActionCreator {
         bundle.put(DataKeys.PRODUCT, product);
         eventBus.post(new ShoppingListAction(ActionTypes.ADD_PRODUCT_TO_LIST, bundle));
     }
+
+    public final void createSetProductBoughtAction(final Product product) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.PRODUCT, product);
+        eventBus.post(new ShoppingListAction(ActionTypes.SET_PRODUCT_BOUGHT, bundle));
+    }
+
+    public final void createSetProductNotBoughtAction(final Product product) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.PRODUCT, product);
+        eventBus.post(new ShoppingListAction(ActionTypes.SET_PRODUCT_NOT_BOUGHT, bundle));
+    }
 }
