@@ -58,4 +58,10 @@ public class ActionCreator {
         bundle.put(DataKeys.LIST_CREATED_AT_TIME, listCreatedAtTime);
         eventBus.post(new ShoppingListAction(ActionTypes.ARCHIVE_LIST, bundle));
     }
+
+    public final void createDeleteShoppingListAction(final long listCreatedAtTime) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.LIST_CREATED_AT_TIME, listCreatedAtTime);
+        eventBus.post(new ShoppingListAction(ActionTypes.DELETE_LIST, bundle));
+    }
 }
