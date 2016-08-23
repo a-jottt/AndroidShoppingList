@@ -52,4 +52,10 @@ public class ActionCreator {
         bundle.put(DataKeys.PRODUCT, product);
         eventBus.post(new ShoppingListAction(ActionTypes.SET_PRODUCT_NOT_BOUGHT, bundle));
     }
+
+    public final void createArchiveShoppingListAction(final long listCreatedAtTime) {
+        DataBundle<DataKeys> bundle = new DataBundle<>();
+        bundle.put(DataKeys.LIST_CREATED_AT_TIME, listCreatedAtTime);
+        eventBus.post(new ShoppingListAction(ActionTypes.ARCHIVE_LIST, bundle));
+    }
 }
