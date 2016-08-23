@@ -172,7 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setSwipeOptionViews(R.id.archive, R.id.delete)
                 .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
                     if (viewID == R.id.archive) {
+                        actionCreator.createArchiveShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
                     } else if (viewID == R.id.delete) {
+                        actionCreator.createDeleteShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
                     }
                 });
     }
