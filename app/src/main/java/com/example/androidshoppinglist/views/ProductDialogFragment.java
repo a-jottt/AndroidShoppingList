@@ -1,7 +1,6 @@
 package com.example.androidshoppinglist.views;
 
 import android.os.Bundle;
-import android.support.annotation.StringDef;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,14 +55,7 @@ public class ProductDialogFragment extends DialogFragment implements TextView.On
         unitSpinner.setAdapter(adapter);
 
         Button activateButton = (Button) view.findViewById(R.id.activateButton);
-        activateButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                attemptProductCreated();
-            }
-        });
+        activateButton.setOnClickListener(v -> attemptProductCreated());
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -77,12 +68,7 @@ public class ProductDialogFragment extends DialogFragment implements TextView.On
         return view;
     }
 
-    final View.OnClickListener closeDialogListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getDialog().cancel();
-        }
-    };
+    final View.OnClickListener closeDialogListener = view -> getDialog().cancel();
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

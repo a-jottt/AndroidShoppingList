@@ -2,7 +2,6 @@ package com.example.androidshoppinglist.stores;
 
 import android.app.Activity;
 
-import com.example.androidshoppinglist.actions.ActionType;
 import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;

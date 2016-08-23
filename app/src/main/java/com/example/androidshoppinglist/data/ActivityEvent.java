@@ -2,7 +2,6 @@ package com.example.androidshoppinglist.data;
 
 import android.app.Activity;
 
-import com.example.androidshoppinglist.actions.ActionType;
 import com.example.androidshoppinglist.actions.ActionTypes;
 
 /**

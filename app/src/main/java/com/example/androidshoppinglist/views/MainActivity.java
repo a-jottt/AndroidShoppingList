@@ -1,5 +1,6 @@
 package com.example.androidshoppinglist.views;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -7,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -57,26 +57,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getApplication()).component().inject(this);
-    }
-
-    @Override
-    public void onStop() {
-        shoppingListStore.onPause();
-        databaseStore.onPause();
-        eventBus.unregister(this);
-        super.onStop();
+        shoppingListItems = new ArrayList<>();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mRecyclerAdapter.notifyDataSetChanged();
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this);
+        }
+        actionCreator.createGetShoppingListsFromDbAction(this);
+    }
+
+    @Override
+    public void onPause() {
+        if (eventBus.isRegistered(this)) {
+            eventBus.unregister(this);
+        }
+        super.onPause();
     }
 
     @AfterViews
     public void prepare() {
-        eventBus.register(this);
-
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -85,10 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        shoppingListItems = new ArrayList<>();
         setupAdapter();
-
-        actionCreator.createGetShoppingListsFromDbAction(this);
     }
 
     @Click(R.id.fab)

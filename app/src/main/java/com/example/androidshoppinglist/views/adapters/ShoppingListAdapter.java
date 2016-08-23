@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
-import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.views.DetailsActivity_;
 
@@ -19,8 +18,6 @@ import java.util.List;
 
 import at.grabner.circleprogress.CircleProgressView;
 import at.grabner.circleprogress.TextMode;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 /**
  * Created by joanna on 29.06.16.

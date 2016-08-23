@@ -50,22 +50,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         if (product.isBought()) {
             holder.imageViewCheckbox.setImageDrawable(
                     ContextCompat.getDrawable(mActivity, R.drawable.checkbox_marked));
-            holder.imageViewCheckbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    actionCreator.createSetProductNotBoughtAction(product);
-                }
-            });
+            holder.imageViewCheckbox.setOnClickListener(view -> actionCreator.createSetProductNotBoughtAction(product));
         }
         else {
             holder.imageViewCheckbox.setImageDrawable(
                     ContextCompat.getDrawable(mActivity, R.drawable.checkbox_blank));
-            holder.imageViewCheckbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    actionCreator.createSetProductBoughtAction(product);
-                }
-            });
+            holder.imageViewCheckbox.setOnClickListener(view -> actionCreator.createSetProductBoughtAction(product));
         }
 
     }

@@ -42,14 +42,7 @@ public class ListTitleDialogFragment extends DialogFragment implements TextView.
         imageButtonClose.setOnClickListener(closeDialogListener);
 
         Button activateButton = (Button) view.findViewById(R.id.activateButton);
-        activateButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                attemptListCreated();
-            }
-        });
+        activateButton.setOnClickListener(v -> attemptListCreated());
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -61,12 +54,7 @@ public class ListTitleDialogFragment extends DialogFragment implements TextView.
         return view;
     }
 
-    final View.OnClickListener closeDialogListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            getDialog().cancel();
-        }
-    };
+    final View.OnClickListener closeDialogListener = view -> getDialog().cancel();
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

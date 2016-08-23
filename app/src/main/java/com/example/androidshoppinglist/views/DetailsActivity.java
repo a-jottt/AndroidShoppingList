@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
@@ -39,14 +38,10 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     @ViewById(R.id.toolbar) Toolbar toolbar;
     @ViewById(R.id.fab) FloatingActionButton fab;
 
-    @Inject
-    ActionCreator actionCreator;
-    @Inject
-    EventBus eventBus;
-    @Inject
-    ShoppingListStore shoppingListStore;
-    @Inject
-    DatabaseStore databaseStore;
+    @Inject ActionCreator actionCreator;
+    @Inject EventBus eventBus;
+    @Inject ShoppingListStore shoppingListStore;
+    @Inject DatabaseStore databaseStore;
 
     @Extra("listCreatedAtTime")
     long listCreatedAtTime;
@@ -58,34 +53,36 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getApplication()).component().inject(this);
+        productsList = new ArrayList<>();
     }
 
     @Override
-    public void onStop() {
-        shoppingListStore.onPause();
-        databaseStore.onPause();
-        eventBus.unregister(this);
-        super.onStop();
+    public void onResume() {
+        super.onResume();
+        if (!eventBus.isRegistered(this)) {
+            eventBus.register(this);
+        }
+        actionCreator.createGetProductsListFromDbAction(listCreatedAtTime);
+    }
+
+    @Override
+    public void onPause() {
+        if (eventBus.isRegistered(this)) {
+            eventBus.unregister(this);
+        }
+        super.onPause();
     }
 
     @AfterViews
     public void prepare() {
-        eventBus.register(this);
-
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment dialog = new ProductDialogFragment();
-                dialog.show(getSupportFragmentManager(), "ProductDialogFragment");
-            }
+        fab.setOnClickListener(view -> {
+            DialogFragment dialog = new ProductDialogFragment();
+            dialog.show(getSupportFragmentManager(), "ProductDialogFragment");
         });
 
-        productsList = new ArrayList<>();
         setupAdapter();
-
-        actionCreator.createGetProductsListFromDbAction(listCreatedAtTime);
     }
 
     private void setupAdapter() {
