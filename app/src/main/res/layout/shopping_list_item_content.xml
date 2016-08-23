@@ -1,69 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="100">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:orientation="vertical"
-        android:layout_weight="30">
+    <LinearLayout
+        android:id="@+id/swipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:orientation="horizontal">
 
-        <at.grabner.circleprogress.CircleProgressView
-            android:id="@+id/circleView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            CircleProgressView:cpv_barColor="@color/colorPrimary"
-            CircleProgressView:cpv_rimColor="@color/colorPrimaryLight"
-            CircleProgressView:cpv_textColor="@color/colorAccentSecond"
-            CircleProgressView:cpv_barWidth="5dp"
-            CircleProgressView:cpv_rimWidth="2dp"
-            CircleProgressView:cpv_contourSize="0dp"
-            CircleProgressView:cpv_autoTextSize="true"
-            CircleProgressView:cpv_seekMode="true"
-            CircleProgressView:cpv_textScale="1"
-            CircleProgressView:cpv_showUnit="false"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="@dimen/list_item_margin"/>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/archive"
+            android:layout_width="@dimen/swipeWidth"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="80dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="?android:selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_menu_archived"
+                    android:tint="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Achive"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/delete"
+            android:layout_width="@dimen/swipeWidth"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccentSecond"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="?android:selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/delete"
+                    android:tint="@android:color/white"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:text="Delete"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/card"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
-        android:layout_weight="70">
+        android:background="@android:color/white"
+        android:visibility="visible">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textViewTitle"
-            android:layout_marginTop="@dimen/list_item_margin"
-            android:layout_alignParentStart="true"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:orientation="vertical"
+            android:layout_weight="30">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Medium Text"
-            android:id="@+id/textViewDate"
-            android:layout_below="@id/textViewTitle"/>
+            <at.grabner.circleprogress.CircleProgressView
+                android:id="@+id/circleView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                CircleProgressView:cpv_barColor="@color/colorPrimary"
+                CircleProgressView:cpv_rimColor="@color/colorPrimaryLight"
+                CircleProgressView:cpv_textColor="@color/colorAccentSecond"
+                CircleProgressView:cpv_barWidth="5dp"
+                CircleProgressView:cpv_rimWidth="2dp"
+                CircleProgressView:cpv_contourSize="0dp"
+                CircleProgressView:cpv_autoTextSize="true"
+                CircleProgressView:cpv_seekMode="true"
+                CircleProgressView:cpv_textScale="1"
+                CircleProgressView:cpv_showUnit="false"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/list_item_margin"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_right"
-            android:id="@+id/imageViewDetails"
-            android:layout_marginTop="@dimen/list_item_margin"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:layout_weight="70">
 
-</LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textViewTitle"
+                android:layout_marginTop="@dimen/list_item_margin"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Medium Text"
+                android:id="@+id/textViewDate"
+                android:layout_below="@id/textViewTitle"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right"
+                android:id="@+id/imageViewDetails"
+                android:layout_marginTop="@dimen/list_item_margin"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

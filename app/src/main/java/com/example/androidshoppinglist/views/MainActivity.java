@@ -22,6 +22,7 @@ import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.stores.DatabaseStore;
 import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
+import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @EActivity(R.layout.activity_drawer)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        ListTitleDialogFragment.ListTitleDialogListener{
+        ListTitleDialogFragment.ListTitleDialogListener {
 
     @ViewById(R.id.toolbar) Toolbar toolbar;
     @ViewById(R.id.fab) FloatingActionButton fab;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     List<ShoppingListItem> shoppingListItems;
     ShoppingListAdapter mRecyclerAdapter;
+    RecyclerTouchListener onTouchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             eventBus.register(this);
         }
         actionCreator.createGetShoppingListsFromDbAction(this);
+        recyclerView.addOnItemTouchListener(onTouchListener);
     }
 
     @Override
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (eventBus.isRegistered(this)) {
             eventBus.unregister(this);
         }
+        recyclerView.removeOnItemTouchListener(onTouchListener);
         super.onPause();
     }
 
@@ -161,5 +165,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this);
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        onTouchListener = new RecyclerTouchListener(this, recyclerView);
+        onTouchListener.setIndependentViews(R.id.imageViewDetails)
+                .setViewsToFade(R.id.imageViewDetails)
+                .setSwipeOptionViews(R.id.archive, R.id.delete)
+                .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
+                    if (viewID == R.id.archive) {
+                    } else if (viewID == R.id.delete) {
+                    }
+                });
     }
 }

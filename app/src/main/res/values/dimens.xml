@@ -15,4 +15,6 @@
 
     <dimen name="list_item_margin">12dp</dimen>
     <dimen name="list_item_wit_unit_margin">15dp</dimen>
+
+    <dimen name="swipeWidth">85dp</dimen>
 </resources>
