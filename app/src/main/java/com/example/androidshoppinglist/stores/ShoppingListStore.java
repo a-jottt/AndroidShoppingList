@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Created by joanna on 29.06.16.
  */
+@Singleton
 public class ShoppingListStore {
 
     public ArrayList<ShoppingListItem> shoppingListItems;

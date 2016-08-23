@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.realm.Realm;
 
 /**
  * Created by joanna on 02.07.16.
  */
+@Singleton
 public class DatabaseStore {
 
     public EventBus eventBus;
@@ -38,17 +40,16 @@ public class DatabaseStore {
 
     @Subscribe
     public void onProductUpdate(Product product) {
-        ShoppingListItem shoppingListItem =
-                realm.where(ShoppingListItem.class).equalTo("createdAtTime", product.getListCreatedAtTime()).findFirst();
-
-        realm.beginTransaction();
-        shoppingListItem.getProducts().add(product);
-        realm.commitTransaction();
-
-        List<Product> products = new ArrayList<>(shoppingListItem.getProducts());
         realm.executeTransaction(realm -> realm.copyToRealmOrUpdate(product));
 
-        eventBus.post(shoppingListItem);
+        ShoppingListItem shoppingListItem =
+                realm.where(ShoppingListItem.class).equalTo("createdAtTime", product.getListCreatedAtTime()).findFirst();
+        List<Product> products = shoppingListItem.getProducts();
+
+        realm.beginTransaction();
+         products.add(product);
+        realm.commitTransaction();
+
         eventBus.post(new ProductsListEvent(products));
     }
 
