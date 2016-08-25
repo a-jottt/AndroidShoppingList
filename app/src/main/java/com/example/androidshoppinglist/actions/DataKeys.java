@@ -9,5 +9,6 @@ public enum DataKeys implements DataKey {
     LIST_CREATED_AT_TIME,
     ACTIVITY_CONTEXT,
     SHOPPING_LIST_TITLE,
-    PRODUCT
+    PRODUCT,
+    GET_LIST_ACTION_TYPE
 }

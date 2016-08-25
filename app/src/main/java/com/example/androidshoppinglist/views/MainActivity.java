@@ -19,6 +19,7 @@ import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.app.BaseApplication;
 import com.example.androidshoppinglist.data.ActionEvent;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.stores.DatabaseStore;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!eventBus.isRegistered(this)) {
             eventBus.register(this);
         }
-        actionCreator.createGetShoppingListsFromDbAction(this);
+        actionCreator.createGetShoppingListsFromDbAction(GetListActionType.CURRENT);
         recyclerView.addOnItemTouchListener(onTouchListener);
     }
 
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Subscribe
     public void onActionEvent(ActionEvent actionEvent) {
-        actionCreator.createGetShoppingListsFromDbAction(this);
+        actionCreator.createGetShoppingListsFromDbAction(GetListActionType.CURRENT);
         Toast.makeText(this, actionEvent.getMessage(), Toast.LENGTH_LONG).show();
     }
 

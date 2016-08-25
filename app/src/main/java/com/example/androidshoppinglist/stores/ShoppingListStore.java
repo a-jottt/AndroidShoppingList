@@ -8,6 +8,7 @@ import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
 import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
@@ -51,8 +52,8 @@ public class ShoppingListStore {
                 addNewShoppingList(title);
                 break;
             case GET_SHOPPING_LISTS_FROM_DATABASE:
-                Activity activity = (Activity) data.get(DataKeys.ACTIVITY_CONTEXT, -1);
-                getShoppingListsFromDb(activity, ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE);
+                GetListActionType listType = (GetListActionType) data.get(DataKeys.GET_LIST_ACTION_TYPE, -1);
+                getShoppingListsFromDb(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, listType);
                 break;
             case ADD_PRODUCT_TO_LIST:
                 Product product = (Product) data.get(DataKeys.PRODUCT, -1);
@@ -81,9 +82,9 @@ public class ShoppingListStore {
         }
     }
 
-    private void getShoppingListsFromDb(Activity activity, ActionTypes actionType) {
+    private void getShoppingListsFromDb(ActionTypes actionType, GetListActionType listType) {
         ActivityEvent activityEvent = new ActivityEvent(actionType);
-        activityEvent.setActivity(activity);
+        activityEvent.setGetListActionType(listType);
         eventBus.post(activityEvent);
     }
 

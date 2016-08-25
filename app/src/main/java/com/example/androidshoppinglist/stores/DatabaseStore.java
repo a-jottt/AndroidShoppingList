@@ -1,8 +1,10 @@
 package com.example.androidshoppinglist.stores;
 
+import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.data.ActionEvent;
 import com.example.androidshoppinglist.data.ActivityEvent;
 import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
@@ -19,6 +21,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by joanna on 02.07.16.
@@ -57,15 +61,15 @@ public class DatabaseStore {
 
     @Subscribe
     public void returnShoppingListsFromDb(ActivityEvent activityEvent) {
-        switch (activityEvent.actionType) {
-            case GET_PRODUCTS_LIST_FROM_DATABASE:
-                List<Product> products = getProductsListFromDatabase(activityEvent.getListCreatedAtTime());
-                eventBus.post(new ProductsListEvent(products));
-                break;
-            case GET_SHOPPING_LISTS_FROM_DATABASE:
-                List<ShoppingListItem> list = new ArrayList<>(getShoppingListsFromDatabase());
-                eventBus.post(new ShoppingListEvent(list));
-                break;
+        if (activityEvent.actionType == ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE) {
+            List<Product> products = getProductsListFromDatabase(activityEvent.getListCreatedAtTime());
+            eventBus.post(new ProductsListEvent(products));
+
+        } else if (activityEvent.actionType == ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE) {
+            List<ShoppingListItem> list =
+                    new ArrayList<>(getShoppingListsFromDatabase(activityEvent.getGetListActionType()));
+            eventBus.post(new ShoppingListEvent(list));
+
         }
     }
 
@@ -115,7 +119,19 @@ public class DatabaseStore {
         return shoppingListItem.getProducts();
     }
 
-    private List<ShoppingListItem> getShoppingListsFromDatabase() {
-        return realm.where(ShoppingListItem.class).findAll();
+    private List<ShoppingListItem> getShoppingListsFromDatabase(GetListActionType listType) {
+        List<ShoppingListItem> list = new ArrayList<>();
+
+        if (listType.equals(GetListActionType.ARCHIVED)) {
+            list = realm.where(ShoppingListItem.class).equalTo("archived", true)
+                    .findAll().sort("createdAt", Sort.DESCENDING);
+
+        } else if (listType.equals(GetListActionType.CURRENT)) {
+            list = realm.where(ShoppingListItem.class).equalTo("archived", false)
+                    .findAll().sort("createdAt", Sort.DESCENDING);
+
+        }
+
+        return list;
     }
 }

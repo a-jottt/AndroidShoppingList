@@ -12,6 +12,7 @@ public class ActivityEvent {
     private Activity activity;
     public final ActionTypes actionType;
     private long listCreatedAtTime;
+    private GetListActionType getListActionType;
 
     public ActivityEvent(ActionTypes actionType) {
         this.actionType = actionType;
@@ -35,5 +36,13 @@ public class ActivityEvent {
 
     public ActionTypes getActionType() {
         return actionType;
+    }
+
+    public GetListActionType getGetListActionType() {
+        return getListActionType;
+    }
+
+    public void setGetListActionType(GetListActionType getListActionType) {
+        this.getListActionType = getListActionType;
     }
 }
