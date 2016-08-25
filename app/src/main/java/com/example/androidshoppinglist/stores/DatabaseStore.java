@@ -87,9 +87,9 @@ public class DatabaseStore {
 
     @Subscribe
     public void onArchiveOrDeleteListEvent(ArchiveOrDeleteListEvent archiveOrDeleteListEvent) {
-        ShoppingListItem shoppingListItem = realm
-                .where(ShoppingListItem.class)
+        ShoppingListItem shoppingListItem = realm.where(ShoppingListItem.class)
                 .equalTo("createdAtTime", archiveOrDeleteListEvent.getListCreatedAtTime()).findFirst();
+
         if (archiveOrDeleteListEvent.getStatus().equals(ArchiveOrDeleteListEvent.EventStatus.ARCHIVE)) {
 
             realm.beginTransaction();
@@ -100,12 +100,8 @@ public class DatabaseStore {
 
         } else if (archiveOrDeleteListEvent.getStatus().equals(ArchiveOrDeleteListEvent.EventStatus.DELETE)) {
 
-            List<Product> products = shoppingListItem.getProducts();
-
             realm.executeTransaction(realm1 -> {
-                for (Product product: products) {
-                    product.deleteFromRealm();
-                }
+                shoppingListItem.getProducts().deleteAllFromRealm();
                 shoppingListItem.deleteFromRealm();
             });
 

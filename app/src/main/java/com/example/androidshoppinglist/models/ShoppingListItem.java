@@ -53,7 +53,7 @@ public class ShoppingListItem extends RealmObject {
         this.createdAt = createdAt;
     }
 
-    public List<Product> getProducts() {
+    public RealmList<Product> getProducts() {
         return products;
     }
 
