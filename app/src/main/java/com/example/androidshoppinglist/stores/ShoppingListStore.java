@@ -7,6 +7,7 @@ import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.models.ShoppingListItem;
@@ -69,6 +70,14 @@ public class ShoppingListStore {
                 Product productNotBought = (Product) data.get(DataKeys.PRODUCT, -1);
                 setProductNotBought(productNotBought);
                 break;
+            case ARCHIVE_LIST:
+                long archivedListCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
+                archiveList(archivedListCreatedAtTime);
+                break;
+            case DELETE_LIST:
+                long deletedListCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
+                deleteList(deletedListCreatedAtTime);
+                break;
         }
     }
 
@@ -99,5 +108,15 @@ public class ShoppingListStore {
 
     private void setProductNotBought(Product productNotBought) {
         eventBus.post(new ProductBoughtEvent(productNotBought, false));
+    }
+
+    private void archiveList(long archivedListCreatedAtTime) {
+        eventBus.post(new ArchiveOrDeleteListEvent(archivedListCreatedAtTime,
+                ArchiveOrDeleteListEvent.EventStatus.ARCHIVE));
+    }
+
+    private void deleteList(long deletedListCreatedAtTime) {
+        eventBus.post(new ArchiveOrDeleteListEvent(deletedListCreatedAtTime,
+                ArchiveOrDeleteListEvent.EventStatus.DELETE));
     }
 }

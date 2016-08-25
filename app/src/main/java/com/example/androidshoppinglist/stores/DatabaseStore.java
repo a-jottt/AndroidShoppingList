@@ -1,6 +1,8 @@
 package com.example.androidshoppinglist.stores;
 
+import com.example.androidshoppinglist.data.ActionEvent;
 import com.example.androidshoppinglist.data.ActivityEvent;
+import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
@@ -47,7 +49,7 @@ public class DatabaseStore {
         List<Product> products = shoppingListItem.getProducts();
 
         realm.beginTransaction();
-         products.add(product);
+        products.add(product);
         realm.commitTransaction();
 
         eventBus.post(new ProductsListEvent(products));
@@ -79,11 +81,38 @@ public class DatabaseStore {
         realm.commitTransaction();
     }
 
+    @Subscribe
+    public void onArchiveOrDeleteListEvent(ArchiveOrDeleteListEvent archiveOrDeleteListEvent) {
+        ShoppingListItem shoppingListItem = realm
+                .where(ShoppingListItem.class)
+                .equalTo("createdAtTime", archiveOrDeleteListEvent.getListCreatedAtTime()).findFirst();
+        if (archiveOrDeleteListEvent.getStatus().equals(ArchiveOrDeleteListEvent.EventStatus.ARCHIVE)) {
+
+            realm.beginTransaction();
+            shoppingListItem.setArchived(true);
+            realm.commitTransaction();
+
+            eventBus.post(new ActionEvent("List has been archived!"));
+
+        } else if (archiveOrDeleteListEvent.getStatus().equals(ArchiveOrDeleteListEvent.EventStatus.DELETE)) {
+
+            List<Product> products = shoppingListItem.getProducts();
+
+            realm.executeTransaction(realm1 -> {
+                for (Product product: products) {
+                    product.deleteFromRealm();
+                }
+                shoppingListItem.deleteFromRealm();
+            });
+
+            eventBus.post(new ActionEvent("List has been deleted!"));
+        }
+    }
+
     private List<Product> getProductsListFromDatabase(long listCreatedAtTime) {
         ShoppingListItem shoppingListItem =
                 realm.where(ShoppingListItem.class).equalTo("createdAtTime", listCreatedAtTime).findFirst();
         return shoppingListItem.getProducts();
-
     }
 
     private List<ShoppingListItem> getShoppingListsFromDatabase() {

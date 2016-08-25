@@ -13,10 +13,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.app.BaseApplication;
+import com.example.androidshoppinglist.data.ActionEvent;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.stores.DatabaseStore;
@@ -152,12 +154,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Subscribe
     public void onNewListAdded(ShoppingListItem shoppingListItem) {
         shoppingListItems.add(shoppingListItem);
-        mRecyclerAdapter.notifyData(shoppingListItems);
+        notifyData(shoppingListItems);
     }
 
     @Subscribe
     public void onShoppingListEvent(ShoppingListEvent shoppingListEvent) {
         shoppingListItems = shoppingListEvent.getList();
+        notifyData(shoppingListItems);
+    }
+
+    @Subscribe
+    public void onActionEvent(ActionEvent actionEvent) {
+        actionCreator.createGetShoppingListsFromDbAction(this);
+        Toast.makeText(this, actionEvent.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    private void notifyData(List<ShoppingListItem> shoppingListItems) {
         mRecyclerAdapter.notifyData(shoppingListItems);
     }
 
