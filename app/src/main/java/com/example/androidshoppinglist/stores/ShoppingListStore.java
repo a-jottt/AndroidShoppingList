@@ -1,13 +1,12 @@
 package com.example.androidshoppinglist.stores;
 
-import android.app.Activity;
-
 import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ShoppingListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
 import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
+import com.example.androidshoppinglist.data.DeleteProductEvent;
 import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.models.Product;
@@ -79,6 +78,9 @@ public class ShoppingListStore {
                 long deletedListCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
                 deleteList(deletedListCreatedAtTime);
                 break;
+            case DELETE_PRODUCT:
+                Product productToDelete = (Product) data.get(DataKeys.PRODUCT, -1);
+                deleteProduct(productToDelete);
         }
     }
 
@@ -119,5 +121,9 @@ public class ShoppingListStore {
     private void deleteList(long deletedListCreatedAtTime) {
         eventBus.post(new ArchiveOrDeleteListEvent(deletedListCreatedAtTime,
                 ArchiveOrDeleteListEvent.EventStatus.DELETE));
+    }
+
+    private void deleteProduct(Product product) {
+        eventBus.post(new DeleteProductEvent(product));
     }
 }

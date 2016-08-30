@@ -110,6 +110,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
                 .setSwipeOptionViews(R.id.delete)
                 .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
                     if (viewID == R.id.delete) {
+                        actionCreator.createDeleteProductAction(productsList.get(position));
                     }
                 });
     }

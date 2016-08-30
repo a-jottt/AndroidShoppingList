@@ -12,5 +12,6 @@ public enum ActionTypes implements ActionType {
     ADD_NEW_SHOPPING_LIST,
     ADD_PRODUCT_TO_LIST,
     ARCHIVE_LIST,
-    DELETE_LIST
+    DELETE_LIST,
+    DELETE_PRODUCT
 }

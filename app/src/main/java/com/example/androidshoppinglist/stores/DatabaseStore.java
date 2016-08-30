@@ -4,6 +4,7 @@ import com.example.androidshoppinglist.actions.ActionTypes;
 import com.example.androidshoppinglist.data.ActionEvent;
 import com.example.androidshoppinglist.data.ActivityEvent;
 import com.example.androidshoppinglist.data.ArchiveOrDeleteListEvent;
+import com.example.androidshoppinglist.data.DeleteProductEvent;
 import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
@@ -107,6 +108,22 @@ public class DatabaseStore {
 
             eventBus.post(new ActionEvent("List has been deleted!"));
         }
+    }
+
+    @Subscribe
+    public void onDeleteProductEvent(DeleteProductEvent deleteProductEvent) {
+        Product product = realm.where(Product.class)
+                .equalTo("createdAtTime", deleteProductEvent.getProduct().getCreatedAt().getTime()).findFirst();
+
+        ShoppingListItem shoppingListItem = realm.where(ShoppingListItem.class)
+                .equalTo("createdAtTime", deleteProductEvent.getProduct().getListCreatedAtTime()).findFirst();
+
+        realm.executeTransaction(realm1 -> {
+            shoppingListItem.getProducts().remove(product);
+            product.deleteFromRealm();
+        });
+
+        eventBus.post(new ProductsListEvent(shoppingListItem.getProducts()));
     }
 
     private List<Product> getProductsListFromDatabase(long listCreatedAtTime) {
