@@ -10,12 +10,18 @@ import java.util.List;
 public class ShoppingListEvent {
 
     public final List<ShoppingListItem> list;
+    public final GetListActionType listType;
 
-    public ShoppingListEvent(List<ShoppingListItem> list) {
+    public ShoppingListEvent(List<ShoppingListItem> list, GetListActionType listType) {
         this.list = list;
+        this.listType = listType;
     }
 
     public List<ShoppingListItem> getList() {
         return list;
+    }
+
+    public GetListActionType getListType() {
+        return listType;
     }
 }

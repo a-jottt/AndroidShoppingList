@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.models.Product;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,11 +27,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private List<Product> products;
     private final Activity mActivity;
     private ActionCreator actionCreator;
+    private GetListActionType listType;
 
-    public ProductListAdapter(List<Product> products, Activity mActivity) {
+    public ProductListAdapter(List<Product> products, Activity mActivity, GetListActionType listType) {
         this.products = products;
         this.mActivity = mActivity;
         this.actionCreator = new ActionCreator(EventBus.getDefault());
+        this.listType = listType;
     }
 
     @Override
@@ -50,14 +53,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         if (product.isBought()) {
             holder.imageViewCheckbox.setImageDrawable(
                     ContextCompat.getDrawable(mActivity, R.drawable.checkbox_marked));
-            holder.imageViewCheckbox.setOnClickListener(view -> actionCreator.createSetProductNotBoughtAction(product));
-        }
-        else {
+
+            if (listType.equals(GetListActionType.CURRENT)) {
+                holder.imageViewCheckbox.setOnClickListener(view ->
+                        actionCreator.createSetProductNotBoughtAction(product));
+            }
+
+        } else {
             holder.imageViewCheckbox.setImageDrawable(
                     ContextCompat.getDrawable(mActivity, R.drawable.checkbox_blank));
-            holder.imageViewCheckbox.setOnClickListener(view -> actionCreator.createSetProductBoughtAction(product));
-        }
 
+            if (listType.equals(GetListActionType.CURRENT)) {
+                holder.imageViewCheckbox.setOnClickListener(view ->
+                        actionCreator.createSetProductBoughtAction(product));
+            }
+        }
     }
 
     @Override

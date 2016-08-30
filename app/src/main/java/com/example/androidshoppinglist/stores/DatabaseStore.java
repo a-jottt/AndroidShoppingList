@@ -68,7 +68,7 @@ public class DatabaseStore {
         } else if (activityEvent.actionType == ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE) {
             List<ShoppingListItem> list =
                     new ArrayList<>(getShoppingListsFromDatabase(activityEvent.getGetListActionType()));
-            eventBus.post(new ShoppingListEvent(list));
+            eventBus.post(new ShoppingListEvent(list, activityEvent.getGetListActionType()));
 
         }
     }

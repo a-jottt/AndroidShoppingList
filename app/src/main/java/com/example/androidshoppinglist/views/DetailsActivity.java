@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.example.androidshoppinglist.R;
 import com.example.androidshoppinglist.actions.ActionCreator;
 import com.example.androidshoppinglist.app.BaseApplication;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ProductBoughtEvent;
 import com.example.androidshoppinglist.data.ProductsListEvent;
 import com.example.androidshoppinglist.models.Product;
@@ -46,6 +48,9 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     @Extra("listCreatedAtTime")
     long listCreatedAtTime;
 
+    @Extra("listType")
+    GetListActionType listType;
+
     ProductListAdapter mRecyclerAdapter;
     List<Product> productsList;
 
@@ -77,6 +82,12 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     public void prepare() {
         setSupportActionBar(toolbar);
 
+        if (listType.equals(GetListActionType.CURRENT)) {
+            fab.setVisibility(View.VISIBLE);
+        } else {
+            fab.setVisibility(View.GONE);
+        }
+
         fab.setOnClickListener(view -> {
             DialogFragment dialog = new ProductDialogFragment();
             dialog.show(getSupportFragmentManager(), "ProductDialogFragment");
@@ -86,7 +97,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
     }
 
     private void setupAdapter() {
-        mRecyclerAdapter = new ProductListAdapter(productsList, this);
+        mRecyclerAdapter = new ProductListAdapter(productsList, this, listType);
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

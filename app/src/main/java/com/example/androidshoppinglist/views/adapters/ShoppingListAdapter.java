@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
+import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.views.DetailsActivity_;
 
@@ -26,10 +27,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     private List<ShoppingListItem> shoppingListItems;
     private final Context mContext;
+    private GetListActionType listType;
 
-    public ShoppingListAdapter(List<ShoppingListItem> shoppingListItems, Context mContext) {
+    public ShoppingListAdapter(List<ShoppingListItem> shoppingListItems, Context mContext, GetListActionType listType) {
         this.shoppingListItems = shoppingListItems;
         this.mContext = mContext;
+        this.listType = listType;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.imageViewDetails.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, DetailsActivity_.class);
             intent.putExtra(mContext.getString(R.string.listCreatedAtTime), shoppingListItem.getCreatedAtTime());
+            intent.putExtra(mContext.getString(R.string.list_type), listType);
             mContext.startActivity(intent);
         });
     }
@@ -62,8 +66,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         return (null != shoppingListItems ? shoppingListItems.size() : 0);
     }
 
-    public void notifyData(List<ShoppingListItem> myList) {
+    public void notifyData(List<ShoppingListItem> myList, GetListActionType listType) {
         this.shoppingListItems = myList;
+        this.listType = listType;
         notifyDataSetChanged();
     }
 

@@ -1,6 +1,8 @@
 package com.example.androidshoppinglist.views;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @ViewById(R.id.drawer_layout) DrawerLayout drawer;
     @ViewById(R.id.nav_view) NavigationView navigationView;
     @ViewById(R.id.recyclerView) RecyclerView recyclerView;
+    @ViewById(R.id.image_stretch_detail) ImageView listImage;
+    @ViewById(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
+    @ViewById(R.id.app_bar) AppBarLayout appBarLayout;
 
     @Inject ActionCreator actionCreator;
     @Inject EventBus eventBus;
@@ -57,12 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<ShoppingListItem> shoppingListItems;
     ShoppingListAdapter mRecyclerAdapter;
     RecyclerTouchListener onTouchListener;
+    GetListActionType listType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((BaseApplication) getApplication()).component().inject(this);
         shoppingListItems = new ArrayList<>();
+        listType = GetListActionType.CURRENT;
     }
 
     @Override
@@ -71,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!eventBus.isRegistered(this)) {
             eventBus.register(this);
         }
-        actionCreator.createGetShoppingListsFromDbAction(GetListActionType.CURRENT);
+        actionCreator.createGetShoppingListsFromDbAction(listType);
         recyclerView.addOnItemTouchListener(onTouchListener);
     }
 
@@ -136,8 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_current) {
+            actionCreator.createGetShoppingListsFromDbAction(GetListActionType.CURRENT);
 
         } else if (id == R.id.nav_archived) {
+            actionCreator.createGetShoppingListsFromDbAction(GetListActionType.ARCHIVED);
 
         } else if (id == R.id.nav_settings) {
 
@@ -161,6 +172,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Subscribe
     public void onShoppingListEvent(ShoppingListEvent shoppingListEvent) {
         shoppingListItems = shoppingListEvent.getList();
+
+        if (shoppingListEvent.getListType().equals(GetListActionType.CURRENT)) {
+            listImage.setBackgroundResource(R.drawable.shopping);
+            collapsingToolbarLayout.setTitle("Current lists");
+            fab.setVisibility(View.VISIBLE);
+            listType = GetListActionType.CURRENT;
+
+        } else if (shoppingListEvent.getListType().equals(GetListActionType.ARCHIVED)) {
+            listImage.setBackgroundResource(R.drawable.clock_old);
+            collapsingToolbarLayout.setTitle("Archived lists");
+            fab.setVisibility(View.GONE);
+            listType = GetListActionType.ARCHIVED;
+        }
+
         notifyData(shoppingListItems);
     }
 
@@ -171,11 +196,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void notifyData(List<ShoppingListItem> shoppingListItems) {
-        mRecyclerAdapter.notifyData(shoppingListItems);
+        mRecyclerAdapter.notifyData(shoppingListItems, listType);
     }
 
     private void setupAdapter() {
-        mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this);
+        mRecyclerAdapter = new ShoppingListAdapter(shoppingListItems, this, listType);
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

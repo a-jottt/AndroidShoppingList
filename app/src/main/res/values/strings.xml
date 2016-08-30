@@ -16,6 +16,7 @@
     <string name="product_name">Product name</string>
     <string name="enter_list_title">Enter list title</string>
     <string name="ok">ok</string>
+    <string name="list_type">listType</string>
 
     <string-array name="unit_array">
         <item>kg</item>
