@@ -19,6 +19,7 @@ import com.example.androidshoppinglist.models.Product;
 import com.example.androidshoppinglist.stores.DatabaseStore;
 import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ProductListAdapter;
+import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -53,6 +54,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
 
     ProductListAdapter mRecyclerAdapter;
     List<Product> productsList;
+    RecyclerTouchListener onTouchListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
             eventBus.register(this);
         }
         actionCreator.createGetProductsListFromDbAction(listCreatedAtTime);
+        recyclerView.addOnItemTouchListener(onTouchListener);
     }
 
     @Override
@@ -75,6 +78,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
         if (eventBus.isRegistered(this)) {
             eventBus.unregister(this);
         }
+        recyclerView.removeOnItemTouchListener(onTouchListener);
         super.onPause();
     }
 
@@ -100,6 +104,14 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
         mRecyclerAdapter = new ProductListAdapter(productsList, this, listType);
         recyclerView.setAdapter(mRecyclerAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        onTouchListener = new RecyclerTouchListener(this, recyclerView);
+        onTouchListener.setViewsToFade(R.id.productDetailsView, R.id.imageViewCheckbox)
+                .setSwipeOptionViews(R.id.delete)
+                .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
+                    if (viewID == R.id.delete) {
+                    }
+                });
     }
 
     @Override
