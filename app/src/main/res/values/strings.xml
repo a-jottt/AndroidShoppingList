@@ -9,7 +9,7 @@
     <string name="archived">Archived</string>
     <string name="current">Current</string>
     <string name="title_hint">Shopping list title</string>
-    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_details">Products</string>
     <string name="listCreatedAtTime">listCreatedAtTime</string>
     <string name="choose_unit">Choose unit:</string>
     <string name="quantity">Quantity</string>
