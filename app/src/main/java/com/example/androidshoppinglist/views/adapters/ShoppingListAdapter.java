@@ -3,11 +3,13 @@ package com.example.androidshoppinglist.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.androidshoppinglist.R;
@@ -53,7 +55,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.circleProgressView.setMaxValue(productsToBuy);
         holder.textViewTitle.setText(shoppingListItem.getTitle());
         holder.textViewDate.setText(shoppingListItem.getFormattedCreatedAt());
-        holder.imageViewDetails.setOnClickListener(view -> {
+        holder.card.setOnClickListener(view -> {
             Intent intent = new Intent(mContext, DetailsActivity_.class);
             intent.putExtra(mContext.getString(R.string.listCreatedAtTime), shoppingListItem.getCreatedAtTime());
             intent.putExtra(mContext.getString(R.string.list_type), listType);
@@ -79,6 +81,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         public final TextView textViewDate;
         public final TextView textViewTitle;
         public final ImageView imageViewDetails;
+        public final LinearLayout card;
 
         public ShoppingListViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +91,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
             textViewDate = (TextView) itemView.findViewById(R.id.textViewDate);
             imageViewDetails = (ImageView) itemView.findViewById(R.id.imageViewDetails);
+            card = (LinearLayout) itemView.findViewById(R.id.card);
         }
     }
 }
