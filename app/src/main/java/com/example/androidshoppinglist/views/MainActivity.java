@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.androidshoppinglist.R;
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void notifyData(List<ShoppingListItem> shoppingListItems) {
         mRecyclerAdapter.notifyData(shoppingListItems, listType);
+        setupOnTouchListener();
     }
 
     private void setupAdapter() {
@@ -205,15 +207,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         onTouchListener = new RecyclerTouchListener(this, recyclerView);
-        onTouchListener.setIndependentViews(R.id.imageViewDetails)
-                .setViewsToFade(R.id.imageViewDetails)
-                .setSwipeOptionViews(R.id.archive, R.id.delete)
-                .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
-                    if (viewID == R.id.archive) {
-                        actionCreator.createArchiveShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
-                    } else if (viewID == R.id.delete) {
-                        actionCreator.createDeleteShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
-                    }
-                });
+    }
+
+    public void setupOnTouchListener() {
+        recyclerView.setAdapter(mRecyclerAdapter);
+
+        if (listType.equals(GetListActionType.CURRENT)) {
+            onTouchListener.setSwipeable(true);
+            onTouchListener.setIndependentViews(R.id.imageViewDetails)
+                    .setSwipeOptionViews(R.id.delete, R.id.archive)
+                    .setViewsToFade(R.id.imageViewDetails)
+                    .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
+                        if (viewID == R.id.archive) {
+                            actionCreator.createArchiveShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
+                        } else if (viewID == R.id.delete) {
+                            actionCreator.createDeleteShoppingListAction(shoppingListItems.get(position).getCreatedAtTime());
+                        }
+                    });
+
+        } else {
+            onTouchListener.setSwipeable(false);
+        }
     }
 }
