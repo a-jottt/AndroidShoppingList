@@ -1,7 +1,6 @@
 package com.example.androidshoppinglist.stores;
 
 import com.example.androidshoppinglist.actions.ActionTypes;
-import com.example.androidshoppinglist.actions.DataBundle;
 import com.example.androidshoppinglist.actions.DataKeys;
 import com.example.androidshoppinglist.actions.ProductsListAction;
 import com.example.androidshoppinglist.data.ActivityEvent;
@@ -34,51 +33,43 @@ public class ProductsListStore {
     }
 
     @Subscribe
-    public final void onProductsListAction(ProductsListAction action) {
-        DataBundle<DataKeys> data = action.getData();
-        ActionTypes actionType = action.getType();
-        switch (actionType) {
-            case ADD_PRODUCT_TO_LIST:
-                Product product = (Product) data.get(DataKeys.PRODUCT, -1);
-                addProductToList(product);
-                break;
-            case GET_PRODUCTS_LIST_FROM_DATABASE:
-                long listCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
-                getProductsListFromDb(listCreatedAtTime, ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE);
-                break;
-            case SET_PRODUCT_BOUGHT:
-                Product productBought = (Product) data.get(DataKeys.PRODUCT, -1);
-                setProductBought(productBought);
-                break;
-            case SET_PRODUCT_NOT_BOUGHT:
-                Product productNotBought = (Product) data.get(DataKeys.PRODUCT, -1);
-                setProductNotBought(productNotBought);
-                break;
-            case DELETE_PRODUCT:
-                Product productToDelete = (Product) data.get(DataKeys.PRODUCT, -1);
-                deleteProduct(productToDelete);
+    public void addProductToList(ProductsListAction action) {
+        if (action.getType().equals(ActionTypes.ADD_PRODUCT_TO_LIST)) {
+            eventBus.post(action.getData().get(DataKeys.PRODUCT, -1));
         }
     }
 
-    private void addProductToList(Product product) {
-        eventBus.post(product);
+    @Subscribe
+    public void getProductsListFromDb(ProductsListAction action) {
+        if (action.getType().equals(ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE)) {
+            ActivityEvent activityEvent = new ActivityEvent(action.getType());
+            long listCreatedAtTime = (long) action.getData().get(DataKeys.LIST_CREATED_AT_TIME, -1);
+            activityEvent.setListCreatedAtTime(listCreatedAtTime);
+            eventBus.post(activityEvent);
+        }
     }
 
-    private void getProductsListFromDb(long createdAtTime, ActionTypes actionType) {
-        ActivityEvent activityEvent = new ActivityEvent(actionType);
-        activityEvent.setListCreatedAtTime(createdAtTime);
-        eventBus.post(activityEvent);
+    @Subscribe
+    public void setProductBought(ProductsListAction action) {
+        if (action.getType().equals(ActionTypes.SET_PRODUCT_BOUGHT)) {
+            Product productBought = (Product) action.getData().get(DataKeys.PRODUCT, -1);
+            eventBus.post(new ProductBoughtEvent(productBought, true));
+        }
     }
 
-    private void setProductBought(Product productBought) {
-        eventBus.post(new ProductBoughtEvent(productBought, true));
+    @Subscribe
+    public void setProductNotBought(ProductsListAction action) {
+        if (action.getType().equals(ActionTypes.SET_PRODUCT_NOT_BOUGHT)) {
+            Product productNotBought = (Product) action.getData().get(DataKeys.PRODUCT, -1);
+            eventBus.post(new ProductBoughtEvent(productNotBought, false));
+        }
     }
 
-    private void setProductNotBought(Product productNotBought) {
-        eventBus.post(new ProductBoughtEvent(productNotBought, false));
-    }
-
-    private void deleteProduct(Product product) {
-        eventBus.post(new DeleteProductEvent(product));
+    @Subscribe
+    public void deleteProduct(ProductsListAction action) {
+        if (action.getType().equals(ActionTypes.DELETE_PRODUCT)) {
+            Product productToDelete = (Product) action.getData().get(DataKeys.PRODUCT, -1);
+            eventBus.post(new DeleteProductEvent(productToDelete));
+        }
     }
 }
