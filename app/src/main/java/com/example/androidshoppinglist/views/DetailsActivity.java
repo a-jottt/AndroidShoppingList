@@ -105,7 +105,7 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         onTouchListener = new RecyclerTouchListener(this, recyclerView);
-        onTouchListener.setViewsToFade(R.id.productDetailsView, R.id.imageViewCheckbox)
+        onTouchListener.setViewsToFade(R.id.productDetailsView, R.id.imageViewCheckbox, R.id.arrowView)
                 .setSwipeOptionViews(R.id.delete)
                 .setSwipeable(R.id.card, R.id.swipe, (viewID, position) -> {
                     if (viewID == R.id.delete) {
