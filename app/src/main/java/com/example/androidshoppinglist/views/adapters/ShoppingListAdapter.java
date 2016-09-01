@@ -3,7 +3,6 @@ package com.example.androidshoppinglist.views.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public void onBindViewHolder(ShoppingListAdapter.ShoppingListViewHolder holder, int position) {
         ShoppingListItem shoppingListItem = shoppingListItems.get(position);
-        int productsBought = shoppingListItem.getProductsBought();
+        int productsBought = shoppingListItem.getProductsBoughtCount();
         int productsToBuy = shoppingListItem.getProducts().size();
 
         holder.circleProgressView.setText(String.valueOf(productsBought) + "/" + String.valueOf(productsToBuy));

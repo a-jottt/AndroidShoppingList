@@ -22,8 +22,8 @@ import javax.inject.Singleton;
 @Singleton
 public class ProductsListStore {
 
-    public ArrayList<Product> products;
-    public EventBus eventBus;
+    protected ArrayList<Product> products;
+    protected EventBus eventBus;
 
     @Inject
     public ProductsListStore(EventBus eventBus) {

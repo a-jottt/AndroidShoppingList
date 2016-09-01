@@ -41,6 +41,7 @@ public class ShoppingListItem extends RealmObject {
 
     public String getFormattedCreatedAt() {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+
         return format.format(createdAt);
     }
 
@@ -56,16 +57,13 @@ public class ShoppingListItem extends RealmObject {
         return createdAtTime;
     }
 
-    public int getProductsBought() {
+    public int getProductsBoughtCount() {
         int productsBought = 0;
         for (Product product: getProducts()) {
             if (product.isBought())
                 productsBought += 1;
         }
-        return productsBought;
-    }
 
-    public int getProductsToBuy() {
-        return products.size();
+        return productsBought;
     }
 }

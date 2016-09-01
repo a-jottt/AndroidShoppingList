@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 import io.realm.Sort;
 
 /**
@@ -31,8 +30,8 @@ import io.realm.Sort;
 @Singleton
 public class DatabaseStore {
 
-    public EventBus eventBus;
-    private Realm realm;
+    protected EventBus eventBus;
+    protected Realm realm;
 
     @Inject
     public DatabaseStore(EventBus eventBus) {

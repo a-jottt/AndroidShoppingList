@@ -23,8 +23,8 @@ import javax.inject.Singleton;
 @Singleton
 public class ShoppingListStore {
 
-    public ArrayList<ShoppingListItem> shoppingListItems;
-    public EventBus eventBus;
+    protected ArrayList<ShoppingListItem> shoppingListItems;
+    protected EventBus eventBus;
 
     @Inject
     public ShoppingListStore(EventBus eventBus) {
