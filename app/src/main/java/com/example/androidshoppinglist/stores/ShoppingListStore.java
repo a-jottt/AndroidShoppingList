@@ -54,22 +54,6 @@ public class ShoppingListStore {
                 GetListActionType listType = (GetListActionType) data.get(DataKeys.GET_LIST_ACTION_TYPE, -1);
                 getShoppingListsFromDb(ActionTypes.GET_SHOPPING_LISTS_FROM_DATABASE, listType);
                 break;
-            case ADD_PRODUCT_TO_LIST:
-                Product product = (Product) data.get(DataKeys.PRODUCT, -1);
-                addProductToList(product);
-                break;
-            case GET_PRODUCTS_LIST_FROM_DATABASE:
-                long listCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
-                getProductsListFromDb(listCreatedAtTime, ActionTypes.GET_PRODUCTS_LIST_FROM_DATABASE);
-                break;
-            case SET_PRODUCT_BOUGHT:
-                Product productBought = (Product) data.get(DataKeys.PRODUCT, -1);
-                setProductBought(productBought);
-                break;
-            case SET_PRODUCT_NOT_BOUGHT:
-                Product productNotBought = (Product) data.get(DataKeys.PRODUCT, -1);
-                setProductNotBought(productNotBought);
-                break;
             case ARCHIVE_LIST:
                 long archivedListCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
                 archiveList(archivedListCreatedAtTime);
@@ -78,9 +62,6 @@ public class ShoppingListStore {
                 long deletedListCreatedAtTime = (long) data.get(DataKeys.LIST_CREATED_AT_TIME, -1);
                 deleteList(deletedListCreatedAtTime);
                 break;
-            case DELETE_PRODUCT:
-                Product productToDelete = (Product) data.get(DataKeys.PRODUCT, -1);
-                deleteProduct(productToDelete);
         }
     }
 
@@ -95,24 +76,6 @@ public class ShoppingListStore {
         eventBus.post(shoppingListItem);
     }
 
-    private void addProductToList(Product product) {
-        eventBus.post(product);
-    }
-
-    private void getProductsListFromDb(long createdAtTime, ActionTypes actionType) {
-        ActivityEvent activityEvent = new ActivityEvent(actionType);
-        activityEvent.setListCreatedAtTime(createdAtTime);
-        eventBus.post(activityEvent);
-    }
-
-    private void setProductBought(Product productBought) {
-        eventBus.post(new ProductBoughtEvent(productBought, true));
-    }
-
-    private void setProductNotBought(Product productNotBought) {
-        eventBus.post(new ProductBoughtEvent(productNotBought, false));
-    }
-
     private void archiveList(long archivedListCreatedAtTime) {
         eventBus.post(new ArchiveOrDeleteListEvent(archivedListCreatedAtTime,
                 ArchiveOrDeleteListEvent.EventStatus.ARCHIVE));
@@ -121,9 +84,5 @@ public class ShoppingListStore {
     private void deleteList(long deletedListCreatedAtTime) {
         eventBus.post(new ArchiveOrDeleteListEvent(deletedListCreatedAtTime,
                 ArchiveOrDeleteListEvent.EventStatus.DELETE));
-    }
-
-    private void deleteProduct(Product product) {
-        eventBus.post(new DeleteProductEvent(product));
     }
 }

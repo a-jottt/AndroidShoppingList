@@ -28,6 +28,7 @@ import com.example.androidshoppinglist.data.GetListActionType;
 import com.example.androidshoppinglist.data.ShoppingListEvent;
 import com.example.androidshoppinglist.models.ShoppingListItem;
 import com.example.androidshoppinglist.stores.DatabaseStore;
+import com.example.androidshoppinglist.stores.ProductsListStore;
 import com.example.androidshoppinglist.stores.ShoppingListStore;
 import com.example.androidshoppinglist.views.adapters.ShoppingListAdapter;
 import com.nikhilpanju.recyclerviewenhanced.RecyclerTouchListener;
@@ -57,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @ViewById(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @ViewById(R.id.app_bar) AppBarLayout appBarLayout;
 
+    @Inject DatabaseStore databaseStore;
+    @Inject ShoppingListStore shoppingListStore;
+    @Inject ProductsListStore productsListStore;
     @Inject ActionCreator actionCreator;
     @Inject EventBus eventBus;
-    @Inject ShoppingListStore shoppingListStore;
-    @Inject DatabaseStore databaseStore;
 
     List<ShoppingListItem> shoppingListItems;
     ShoppingListAdapter mRecyclerAdapter;

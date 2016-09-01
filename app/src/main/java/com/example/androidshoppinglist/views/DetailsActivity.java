@@ -43,7 +43,6 @@ public class DetailsActivity extends AppCompatActivity implements ProductDialogF
 
     @Inject ActionCreator actionCreator;
     @Inject EventBus eventBus;
-    @Inject ShoppingListStore shoppingListStore;
     @Inject DatabaseStore databaseStore;
 
     @Extra("listCreatedAtTime")
