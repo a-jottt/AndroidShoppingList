@@ -14,14 +14,13 @@ import io.realm.annotations.PrimaryKey;
  */
 public class ShoppingListItem extends RealmObject {
 
-    String title;
-    Date createdAt;
-    @PrimaryKey long createdAtTime;
-    boolean archived;
-    RealmList<Product> products;
+    @PrimaryKey protected long createdAtTime;
+    protected String title;
+    protected Date createdAt;
+    protected boolean archived;
+    protected RealmList<Product> products;
 
     public ShoppingListItem() {
-        super();
     }
 
     public ShoppingListItem(String title, Date createdAt) {
@@ -40,33 +39,13 @@ public class ShoppingListItem extends RealmObject {
         this.title = title;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
     public String getFormattedCreatedAt() {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         return format.format(createdAt);
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public RealmList<Product> getProducts() {
         return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products.addAll(products);
-    }
-
-    public void addToProducts(Product product) {
-        this.products.add(product);
-    }
-
-    public boolean isArchived() {
-        return archived;
     }
 
     public void setArchived(boolean archived) {
