@@ -18,6 +18,7 @@ import com.example.androidshoppinglist.models.Product;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by joanna on 03.07.16.
@@ -47,7 +48,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         Product product = products.get(position);
 
         holder.textViewProduct.setText(product.getName());
-        holder.textViewQuantity.setText(String.valueOf(product.getQuantity()));
+        holder.textViewQuantity.setText(getFormattedNumber(product.getQuantity()));
         holder.textViewUnit.setText(product.getUnit());
 
         if (product.isBought()) {
@@ -78,6 +79,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void notifyData(List<Product> myList) {
         this.products = myList;
         notifyDataSetChanged();
+    }
+
+    private String getFormattedNumber(double number) {
+        return (number % 1 == 0)? String.format(Locale.UK, "%d", (int) number) : String.format(Locale.UK, "%.2f", number);
     }
 
     class ProductListViewHolder extends RecyclerView.ViewHolder {
