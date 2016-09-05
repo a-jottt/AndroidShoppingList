@@ -12,13 +12,4 @@
             android:title="@string/archived" />
     </group>
 
-    <item android:title="@string/other">
-        <menu>
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="@string/action_settings" />
-        </menu>
-    </item>
-
 </menu>
